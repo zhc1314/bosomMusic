@@ -1,0 +1,113 @@
+<!--pages/student/schedule.wxml-->
+<navigation-bar title="课程预约" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="schedule-container">
+  <!-- 顶部日期选择 -->
+  <view class="date-header">
+    <view class="date-nav">
+      <text class="nav-btn" bindtap="prevWeek">‹</text>
+      <text class="current-date">{{currentWeekRange}}</text>
+      <text class="nav-btn" bindtap="nextWeek">›</text>
+    </view>
+    <text class="today-btn" bindtap="goToToday">今天</text>
+  </view>
+
+  <!-- 时间表头部 -->
+  <view class="time-header">
+    <view class="time-cell time-label">时间</view>
+    <view class="day-cells">
+      <view wx:for="{{weekDays}}" wx:key="date" class="day-cell {{item.isToday ? 'today' : ''}}">
+        <text class="day-name">{{item.dayName}}</text>
+        <text class="day-date">{{item.date}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间表内容 -->
+  <scroll-view class="schedule-content" scroll-y>
+    <view class="time-slots">
+      <view wx:for="{{timeSlots}}" wx:key="time" class="time-row">
+        <view class="time-cell">{{item.time}}</view>
+        <view class="day-slots">
+          <view wx:for="{{weekDays}}" wx:key="date" class="day-slot">
+            <view 
+              class="schedule-item {{getScheduleClass(item.date, slot.time)}}"
+              bindtap="handleScheduleClick"
+              bindlongpress="handleScheduleLongPress"
+              data-date="{{item.date}}"
+              data-time="{{slot.time}}"
+              data-status="{{getScheduleStatus(item.date, slot.time)}}"
+            >
+              <text class="schedule-text">{{getScheduleText(item.date, slot.time)}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tips">
+    <text class="tip-item">• 点击可预约时间段进行预约</text>
+    <text class="tip-item">• 长按已预约课程可取消</text>
+    <text class="tip-item">• 每节课45分钟，间隔30分钟</text>
+  </view>
+
+  <!-- 预约确认弹窗 -->
+  <view class="modal {{showReservationModal ? 'show' : ''}}" catchtap="hideReservationModal">
+    <view class="modal-content" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">课程预约</text>
+        <text class="modal-close" bindtap="hideReservationModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="reservation-info">
+          <text class="info-label">预约时间：</text>
+          <text class="info-value">{{selectedDate}} {{selectedTime}}</text>
+        </view>
+        
+        <view class="reservation-info">
+          <text class="info-label">课程时长：</text>
+          <text class="info-value">45分钟</text>
+        </view>
+        
+        <view class="conflict-check" wx:if="{{hasConflict}}">
+          <text class="conflict-warning">⚠️ 该时间段与您已预约的课程有冲突</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideReservationModal">取消</button>
+        <button class="btn-confirm" bindtap="confirmReservation" disabled="{{hasConflict}}">确认预约</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 取消预约弹窗 -->
+  <view class="modal {{showCancelModal ? 'show' : ''}}" catchtap="hideCancelModal">
+    <view class="modal-content" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">取消预约</text>
+        <text class="modal-close" bindtap="hideCancelModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <text class="cancel-text">确定要取消以下课程的预约吗？</text>
+        
+        <view class="reservation-info">
+          <text class="info-label">预约时间：</text>
+          <text class="info-value">{{selectedDate}} {{selectedTime}}</text>
+        </view>
+        
+        <view class="cancel-tip">
+          <text class="tip-text">取消后该时间段将重新开放预约</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideCancelModal">再想想</button>
+        <button class="btn-confirm cancel-btn" bindtap="confirmCancel">确认取消</button>
+      </view>
+    </view>
+  </view>
+</view>

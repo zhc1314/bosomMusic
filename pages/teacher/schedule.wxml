@@ -1,0 +1,62 @@
+<!--pages/teacher/schedule.wxml-->
+<navigation-bar title="课程表管理" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="schedule-container">
+  <!-- 顶部日期选择 -->
+  <view class="date-header">
+    <view class="date-nav">
+      <text class="nav-btn" bindtap="prevWeek">‹</text>
+      <text class="current-date">{{currentWeekRange}}</text>
+      <text class="nav-btn" bindtap="nextWeek">›</text>
+    </view>
+    <text class="today-btn" bindtap="goToToday">今天</text>
+  </view>
+
+  <!-- 时间表头部 -->
+  <view class="time-header">
+    <view class="time-cell time-label">时间</view>
+    <view class="day-cells">
+      <view wx:for="{{weekDays}}" wx:key="date" class="day-cell {{item.isToday ? 'today' : ''}}">
+        <text class="day-name">{{item.dayName}}</text>
+        <text class="day-date">{{item.date}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间表内容 -->
+  <scroll-view class="schedule-content" scroll-y>
+    <view class="time-slots">
+      <view wx:for="{{timeSlots}}" wx:key="time" class="time-row">
+        <view class="time-cell">{{item.time}}</view>
+        <view class="day-slots">
+          <view wx:for="{{weekDays}}" wx:key="date" class="day-slot">
+            <view 
+              class="schedule-item {{getScheduleClass(item.date, slot.time)}}"
+              bindtap="viewScheduleDetail"
+              data-date="{{item.date}}"
+              data-time="{{slot.time}}"
+            >
+              <text class="student-name">{{getStudentName(item.date, slot.time)}}</text>
+              <text class="schedule-status">{{getScheduleStatus(item.date, slot.time)}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部统计信息 -->
+  <view class="stats-footer">
+    <view class="stat-item">
+      <text class="stat-value">{{totalLessons}}</text>
+      <text class="stat-label">本周课程</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{completedLessons}}</text>
+      <text class="stat-label">已完成</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{pendingLessons}}</text>
+      <text class="stat-label">待上课</text>
+    </view>
+  </view>
+</view>

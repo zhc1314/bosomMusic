@@ -1,0 +1,42 @@
+<!--pages/role/role.wxml-->
+<navigation-bar title="选择身份" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="role-container">
+  <view class="header">
+    <text class="title">选择您的身份</text>
+    <text class="subtitle">请选择您在平台中的角色</text>
+  </view>
+  
+  <view class="role-cards">
+    <view class="role-card teacher-card" bindtap="selectTeacher">
+      <view class="card-icon">
+        <image class="icon" src="/images/role/teacher.png" mode="aspectFit"></image>
+      </view>
+      <text class="role-title">老师</text>
+      <text class="role-desc">管理课程表、查看学员预约、记录上课评价</text>
+      <view class="features">
+        <text class="feature">• 课程表管理</text>
+        <text class="feature">• 学员预约查看</text>
+        <text class="feature">• 上课记录评价</text>
+      </view>
+      <view class="select-btn">选择老师身份</view>
+    </view>
+    
+    <view class="role-card student-card" bindtap="selectStudent">
+      <view class="card-icon">
+        <image class="icon" src="/images/role/student.png" mode="aspectFit"></image>
+      </view>
+      <text class="role-title">学员</text>
+      <text class="role-desc">预约课程、查看课程安排、管理个人学习</text>
+      <view class="features">
+        <text class="feature">• 课程预约</text>
+        <text class="feature">• 时间表查看</text>
+        <text class="feature">• 学习记录</text>
+      </view>
+      <view class="select-btn">选择学员身份</view>
+    </view>
+  </view>
+  
+  <view class="tip">
+    <text class="tip-text">提示：选择后可在设置中切换身份</text>
+  </view>
+</view>

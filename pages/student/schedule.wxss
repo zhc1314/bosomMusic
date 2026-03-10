@@ -1,0 +1,343 @@
+/* pages/student/schedule.wxss */
+.schedule-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-header {
+  background: #ffffff;
+  padding: 30rpx 40rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 40rpx;
+}
+
+.nav-btn {
+  font-size: 36rpx;
+  color: #1890ff;
+  font-weight: bold;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30rpx;
+  background: #f0f8ff;
+}
+
+.current-date {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.today-btn {
+  font-size: 26rpx;
+  color: #1890ff;
+  padding: 12rpx 24rpx;
+  border: 2rpx solid #1890ff;
+  border-radius: 20rpx;
+}
+
+.time-header {
+  background: #ffffff;
+  display: flex;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.time-label {
+  width: 120rpx;
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.day-cells {
+  flex: 1;
+  display: flex;
+}
+
+.day-cell {
+  flex: 1;
+  padding: 20rpx;
+  text-align: center;
+  border-left: 2rpx solid #f0f0f0;
+}
+
+.day-cell.today {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.day-name {
+  display: block;
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 8rpx;
+}
+
+.day-cell.today .day-name {
+  color: #1890ff;
+}
+
+.day-date {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.day-cell.today .day-date {
+  color: #1890ff;
+}
+
+.schedule-content {
+  flex: 1;
+  height: 60vh;
+}
+
+.time-slots {
+  background: #ffffff;
+}
+
+.time-row {
+  display: flex;
+  border-bottom: 1rpx solid #f0f0f0;
+  min-height: 120rpx;
+}
+
+.time-cell {
+  width: 120rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #666666;
+  background: #fafafa;
+}
+
+.day-slots {
+  flex: 1;
+  display: flex;
+}
+
+.day-slot {
+  flex: 1;
+  border-left: 1rpx solid #f0f0f0;
+  padding: 8rpx;
+}
+
+.schedule-item {
+  height: 100%;
+  border-radius: 8rpx;
+  padding: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 22rpx;
+  transition: all 0.3s ease;
+}
+
+.schedule-item:active {
+  opacity: 0.8;
+  transform: scale(0.95);
+}
+
+.schedule-item.available {
+  background: #f6ffed;
+  border: 2rpx solid #b7eb8f;
+  color: #52c41a;
+}
+
+.schedule-item.booked {
+  background: #fff7e6;
+  border: 2rpx solid #ffd591;
+  color: #fa8c16;
+}
+
+.schedule-item.self-booked {
+  background: #e6f7ff;
+  border: 2rpx solid #91d5ff;
+  color: #1890ff;
+}
+
+.schedule-item.completed {
+  background: #f6ffed;
+  border: 2rpx solid #b7eb8f;
+  color: #52c41a;
+}
+
+.schedule-item.cancelled {
+  background: #f5f5f5;
+  border: 2rpx solid #d9d9d9;
+  color: #bfbfbf;
+}
+
+.schedule-text {
+  font-weight: 500;
+}
+
+.footer-tips {
+  background: #ffffff;
+  padding: 30rpx 40rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.tip-item {
+  display: block;
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 8rpx;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 20rpx;
+  width: 80%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40rpx 40rpx 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.modal-close {
+  font-size: 40rpx;
+  color: #999999;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 40rpx;
+}
+
+.reservation-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.info-label {
+  font-size: 26rpx;
+  color: #666666;
+  min-width: 120rpx;
+}
+
+.info-value {
+  font-size: 26rpx;
+  color: #333333;
+  flex: 1;
+}
+
+.conflict-check {
+  margin-top: 30rpx;
+  padding: 20rpx;
+  background: #fff7e6;
+  border-radius: 12rpx;
+  border: 2rpx solid #ffd591;
+}
+
+.conflict-warning {
+  font-size: 24rpx;
+  color: #fa8c16;
+  text-align: center;
+}
+
+.cancel-text {
+  display: block;
+  font-size: 26rpx;
+  color: #333333;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.cancel-tip {
+  margin-top: 30rpx;
+  padding: 20rpx;
+  background: #f6ffed;
+  border-radius: 12rpx;
+  border: 2rpx solid #b7eb8f;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #52c41a;
+  text-align: center;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 40rpx 40rpx;
+}
+
+.btn-cancel, .btn-confirm {
+  flex: 1;
+  height: 80rpx;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666666;
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: #ffffff;
+}
+
+.btn-confirm:disabled {
+  background: #cccccc;
+  color: #999999;
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+}

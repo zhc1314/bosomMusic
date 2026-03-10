@@ -1,0 +1,102 @@
+<!--pages/index/index.wxml-->
+<view class="index-container">
+  <!-- 顶部轮播图 -->
+  <swiper class="banner-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-image" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="banner-content">
+        <text class="banner-title">{{item.title}}</text>
+        <text class="banner-desc">{{item.desc}}</text>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 用户信息区域 -->
+  <view class="user-info">
+    <view class="user-avatar">
+      <image class="avatar" src="/images/avatar.png" mode="aspectFit"></image>
+    </view>
+    <view class="user-details">
+      <text class="user-name">{{userInfo.phoneNumber ? (userRole === 'teacher' ? '老师' : '学员') + userInfo.phoneNumber.slice(-4) : '请先登录'}}</text>
+      <text class="user-role">{{userRole === 'teacher' ? '声乐老师' : userRole === 'student' ? '声乐学员' : '请先登录'}}</text>
+    </view>
+    <view class="user-stats">
+      <text class="stat-value">{{todayLessons}}</text>
+      <text class="stat-label">今日课程</text>
+    </view>
+  </view>
+
+  <!-- 功能面板 -->
+  <view wx:if="{{userInfo.phoneNumber}}" class="function-panel">
+    <text class="panel-title">快捷功能</text>
+    
+    <view class="function-grid">
+      <view wx:if="{{userRole === 'teacher'}}" class="function-item" bindtap="goToTeacherSchedule">
+        <view class="function-icon teacher">📅</view>
+        <text class="function-name">课程表管理</text>
+        <text class="function-desc">查看学员预约情况</text>
+      </view>
+      
+      <view wx:if="{{userRole === 'teacher'}}" class="function-item" bindtap="goToTeacherRecords">
+        <view class="function-icon records">📝</view>
+        <text class="function-name">上课记录</text>
+        <text class="function-desc">记录课程评价</text>
+      </view>
+      
+      <view wx:if="{{userRole === 'student'}}" class="function-item" bindtap="goToStudentSchedule">
+        <view class="function-icon schedule">⏰</view>
+        <text class="function-name">课程预约</text>
+        <text class="function-desc">预约声乐课程</text>
+      </view>
+      
+      <view wx:if="{{userRole === 'student'}}" class="function-item" bindtap="goToStudentReservation">
+        <view class="function-icon reservation">📋</view>
+        <text class="function-name">我的预约</text>
+        <text class="function-desc">查看预约记录</text>
+      </view>
+      
+      <view class="function-item" bindtap="switchRole">
+        <view class="function-icon role">🔄</view>
+        <text class="function-name">切换身份</text>
+        <text class="function-desc">{{userRole === 'teacher' ? '切换到学员' : '切换到老师'}}</text>
+      </view>
+      
+      <view class="function-item" bindtap="logout">
+        <view class="function-icon logout">🚪</view>
+        <text class="function-name">退出登录</text>
+        <text class="function-desc">安全退出账号</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未登录提示 -->
+  <view wx:if="{{!userInfo.phoneNumber}}" class="login-prompt">
+    <view class="prompt-content">
+      <image class="prompt-icon" src="/images/login-prompt.png" mode="aspectFit"></image>
+      <text class="prompt-title">请先登录</text>
+      <text class="prompt-desc">登录后即可使用声乐课程表功能</text>
+      <button class="prompt-login-btn" bindtap="goToLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 今日课程提醒 -->
+  <view wx:if="{{todayLessons > 0}}" class="today-reminder">
+    <view class="reminder-header">
+      <text class="reminder-title">今日课程提醒</text>
+      <text class="reminder-count">{{todayLessons}} 节课</text>
+    </view>
+    
+    <view class="lesson-list">
+      <view wx:for="{{todayLessonList}}" wx:key="id" class="lesson-item">
+        <text class="lesson-time">{{item.time}}</text>
+        <text class="lesson-info">{{item.info}}</text>
+        <text class="lesson-status {{item.status}}">{{item.statusText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部版权信息 -->
+  <view class="footer">
+    <text class="footer-text">声乐课程表 © 2024</text>
+  </view>
+</view>

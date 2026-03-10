@@ -1,0 +1,17 @@
+{
+  "name": "bosom-music",
+  "version": "1.0.0",
+  "description": "声乐课程表微信小程序",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"小程序项目，请在微信开发者工具中运行\" && exit 0"
+  },
+  "keywords": [
+    "微信小程序",
+    "声乐",
+    "课程表",
+    "预约系统"
+  ],
+  "author": "开发者",
+  "license": "MIT"
+}

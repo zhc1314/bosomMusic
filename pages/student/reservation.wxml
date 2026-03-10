@@ -1,0 +1,101 @@
+<!--pages/student/reservation.wxml-->
+<navigation-bar title="我的预约" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="reservation-container">
+  <!-- 筛选条件 -->
+  <view class="filter-bar">
+    <picker class="filter-picker" mode="date" value="{{filterDate}}" bindchange="onDateChange">
+      <view class="picker-label">
+        <text class="picker-text">{{filterDateDisplay}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+    
+    <picker class="filter-picker" range="{{statusOptions}}" value="{{filterStatus}}" bindchange="onStatusChange">
+      <view class="picker-label">
+        <text class="picker-text">{{statusOptions[filterStatus]}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 预约列表 -->
+  <scroll-view class="reservation-list" scroll-y>
+    <view wx:if="{{reservations.length === 0}}" class="empty-state">
+      <image class="empty-icon" src="/images/empty.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无预约记录</text>
+      <text class="empty-desc">去课程表页面预约课程吧</text>
+      <button class="go-schedule-btn" bindtap="goToSchedule">去预约课程</button>
+    </view>
+
+    <view wx:else class="reservations">
+      <view wx:for="{{reservations}}" wx:key="id" class="reservation-item">
+        <view class="reservation-header">
+          <text class="reservation-time">{{item.date}} {{item.time}}</text>
+          <text class="reservation-status {{item.status}}">{{getStatusText(item.status)}}</text>
+        </view>
+        
+        <view class="reservation-info">
+          <view class="info-item">
+            <text class="info-label">课程时长：</text>
+            <text class="info-value">45分钟</text>
+          </view>
+          
+          <view class="info-item">
+            <text class="info-label">预约时间：</text>
+            <text class="info-value">{{formatReservationTime(item.reservationTime)}}</text>
+          </view>
+          
+          <view class="info-item" wx:if="{{item.evaluation}}">
+            <text class="info-label">老师评价：</text>
+            <text class="info-value">{{item.evaluation}}</text>
+          </view>
+          
+          <view class="info-item" wx:if="{{item.rating > 0}}">
+            <text class="info-label">课程评分：</text>
+            <view class="rating-stars">
+              <text wx:for="{{5}}" wx:key="index" class="star {{index < item.rating ? 'active' : ''}}">★</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="reservation-actions" wx:if="{{item.status === 'booked'}}">
+          <button class="cancel-btn" bindtap="cancelReservation" data-reservation="{{item}}">
+            取消预约
+          </button>
+        </view>
+
+        <view class="reservation-tip" wx:if="{{item.status === 'booked'}}">
+          <text class="tip-text">长按课程表可快速取消预约</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 取消确认弹窗 -->
+  <view class="modal {{showCancelModal ? 'show' : ''}}" catchtap="hideCancelModal">
+    <view class="modal-content" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">取消预约</text>
+        <text class="modal-close" bindtap="hideCancelModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <text class="cancel-text">确定要取消以下课程的预约吗？</text>
+        
+        <view class="reservation-info">
+          <text class="info-label">预约时间：</text>
+          <text class="info-value">{{currentReservation.date}} {{currentReservation.time}}</text>
+        </view>
+        
+        <view class="cancel-tip">
+          <text class="tip-text">取消后该时间段将重新开放预约</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideCancelModal">再想想</button>
+        <button class="btn-confirm cancel-btn" bindtap="confirmCancel">确认取消</button>
+      </view>
+    </view>
+  </view>
+</view>

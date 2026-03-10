@@ -1,0 +1,110 @@
+<!--pages/teacher/records.wxml-->
+<navigation-bar title="上课记录" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="records-container">
+  <!-- 筛选条件 -->
+  <view class="filter-bar">
+    <picker class="filter-picker" mode="date" value="{{filterDate}}" bindchange="onDateChange">
+      <view class="picker-label">
+        <text class="picker-text">{{filterDateDisplay}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+    
+    <picker class="filter-picker" range="{{statusOptions}}" value="{{filterStatus}}" bindchange="onStatusChange">
+      <view class="picker-label">
+        <text class="picker-text">{{statusOptions[filterStatus]}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 记录列表 -->
+  <scroll-view class="records-list" scroll-y>
+    <view wx:if="{{records.length === 0}}" class="empty-state">
+      <image class="empty-icon" src="/images/empty.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无上课记录</text>
+      <text class="empty-desc">选择日期查看对应记录</text>
+    </view>
+
+    <view wx:else class="records">
+      <view wx:for="{{records}}" wx:key="id" class="record-item">
+        <view class="record-header">
+          <text class="student-name">{{item.studentName}}</text>
+          <text class="record-status {{item.status}}">{{getStatusText(item.status)}}</text>
+        </view>
+        
+        <view class="record-info">
+          <view class="info-item">
+            <text class="info-label">时间：</text>
+            <text class="info-value">{{item.date}} {{item.time}}</text>
+          </view>
+          
+          <view class="info-item" wx:if="{{item.evaluation}}">
+            <text class="info-label">评价：</text>
+            <text class="info-value">{{item.evaluation}}</text>
+          </view>
+          
+          <view class="info-item" wx:if="{{item.rating > 0}}">
+            <text class="info-label">评分：</text>
+            <view class="rating-stars">
+              <text wx:for="{{5}}" wx:key="index" class="star {{index < item.rating ? 'active' : ''}}">★</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="record-actions" wx:if="{{item.status === 'completed' && !item.evaluation}}">
+          <button class="evaluate-btn" bindtap="evaluateRecord" data-record="{{item}}">
+            课程评价
+          </button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 评价弹窗 -->
+  <view class="modal {{showEvaluationModal ? 'show' : ''}}" catchtap="hideEvaluationModal">
+    <view class="modal-content" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">课程评价</text>
+        <text class="modal-close" bindtap="hideEvaluationModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="evaluation-info">
+          <text class="eval-student">学员：{{currentRecord.studentName}}</text>
+          <text class="eval-time">时间：{{currentRecord.date}} {{currentRecord.time}}</text>
+        </view>
+        
+        <view class="rating-section">
+          <text class="rating-label">评分：</text>
+          <view class="rating-input">
+            <text 
+              wx:for="{{5}}" 
+              wx:key="index" 
+              class="star-input {{index < evaluationRating ? 'active' : ''}}"
+              bindtap="setRating"
+              data-rating="{{index + 1}}"
+            >★</text>
+          </view>
+        </view>
+        
+        <view class="evaluation-section">
+          <text class="eval-label">评价内容：</text>
+          <textarea 
+            class="eval-textarea" 
+            placeholder="请输入课程评价..."
+            value="{{evaluationContent}}"
+            bindinput="onEvaluationInput"
+            maxlength="200"
+          ></textarea>
+          <text class="char-count">{{evaluationContent.length}}/200</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideEvaluationModal">取消</button>
+        <button class="btn-confirm" bindtap="submitEvaluation">提交评价</button>
+      </view>
+    </view>
+  </view>
+</view>
